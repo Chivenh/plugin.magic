@@ -1,0 +1,37 @@
+<idea-plugin>
+    <id>com.fhtiger.plugins.magic</id>
+    <name>magic</name>
+    <version>1.0.0</version>
+    <vendor email="guishizuiezhishi@163.com" url="https://github.com/ghostFlyTiger/plugin.html2text">GhostFlyTiger</vendor>
+
+    <description><![CDATA[
+    Transfer HTML content to text content with simple action;
+    ]]></description>
+
+    <change-notes><![CDATA[
+      plugin published the first version 1.0.0 <br>
+      <em>First version</em>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <toolWindow id="Sample Calendar" secondary="true" icon="/defineToolWindow/plus.png" anchor="right"
+                    factoryClass="com.fhtiger.plugins.magic.toolwindow.WindowFactory"/>
+        <toolWindow id="Text Window" secondary="true" icon="/defineToolWindow/plus.png" anchor="right" factoryClass="com.fhtiger.plugins.magic.toolwindow.TextAreaFactory"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="com.fhtiger.plugins.magic.Html2Text" class="com.fhtiger.plugins.magic.Html2Text" text="html2Text-Test">
+            <add-to-group group-id="EditMenu"/>
+        </action>
+    </actions>
+</idea-plugin>
