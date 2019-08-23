@@ -36,7 +36,7 @@ public final class NumTransferUtil {
 		// 数字字符串参数
 		// 判断字符串是否为数字
 		if (!num.matches("\\d+")) {
-			return String.format("%s is not number", num);
+			return String.format("E:'%s' is not number", num);
 		}
 		num = num.replaceAll("^[0]*([1-9]*)", "$1");
 		// 把字符串前面的0去掉
@@ -45,7 +45,7 @@ public final class NumTransferUtil {
 			return EN_NUM[0];
 		} else if (num.length() > 9) {
 			// 如果大于9，即大于999999999，限制条件
-			return "too big!";
+			return "E:too big!";
 		}
 		// 按3位分割分组
 		int count = (num.length() % 3 == 0) ? num.length() / 3 : num.length() / 3 + 1;

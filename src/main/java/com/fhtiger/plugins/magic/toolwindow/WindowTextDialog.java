@@ -1,7 +1,7 @@
 package com.fhtiger.plugins.magic.toolwindow;
 
+import com.fhtiger.plugins.magic.utils.NumTransferUtil;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.wm.ToolWindow;
@@ -19,8 +19,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class WindowTextDialog extends JDialog {
 	private JPanel contentPane;
@@ -31,11 +29,13 @@ public class WindowTextDialog extends JDialog {
 	private JTextArea resultTextArea;
 	private JButton SqlInParams;
 	private JButton Html2Text;
+	private JButton NumTransfer;
 	private final static String EMPTY="";
 
 	public WindowTextDialog(ToolWindow toolWindow) {
 
 		setContentPane(this.contentPane);
+		this.textAreaPanel.setAutoscrolls(true);
 		setModal(true);
 		getRootPane().setDefaultButton(buttonOK);
 
@@ -59,9 +59,14 @@ public class WindowTextDialog extends JDialog {
 
 		this.SqlInParams.addActionListener(this::execSqlInParamsAction);
 		this.Html2Text.addActionListener(this::execHtml2Text);
+		this.NumTransfer.addActionListener(this::execNumberTransfer);
 
 		/*在点击此按钮时执行复制操作*/
 		this.buttonOK.addActionListener(e->{
+			//结果展示区域为空时,不执行复制操作.
+			if(StringUtils.isEmpty(this.resultTextArea.getText())){
+				return;
+			}
 			this.resultTextArea.requestFocus();
 			this.resultTextArea.selectAll();
 			this.resultTextArea.copy();
@@ -77,11 +82,13 @@ public class WindowTextDialog extends JDialog {
 		this.resultTextArea.setAutoscrolls(true);
 		this.textArea.setAutoscrolls(true);
 
-		this.textArea.setBorder(BorderFactory.createBevelBorder(1));
-		this.resultTextArea.setBorder(BorderFactory.createBevelBorder(1));
+		this.textArea.setBorder(BorderFactory.createDashedBorder(JBColor.LIGHT_GRAY));
+		this.resultTextArea.setBorder(BorderFactory.createDashedBorder(JBColor.LIGHT_GRAY));
 	}
 
-
+	/**
+	 * @param action 将列表参数处理成sql中in的条件参数.
+	 */
 	private void execSqlInParamsAction(ActionEvent action){
 		String text = this.textArea.getText();
 
@@ -93,10 +100,13 @@ public class WindowTextDialog extends JDialog {
 			if(!result.startsWith("'")){
 				result = '\''+result;
 			}
+			if(!result.endsWith("'")){
+				result+='\'';
+			}
 
 			this.resultTextArea.setText(result);
+			actionDown(this.SqlInParams,"Transfer Successful!");
 		}
-		actionDown(this.SqlInParams,"Transfer Successful!");
 	}
 
 	/**
@@ -116,6 +126,7 @@ public class WindowTextDialog extends JDialog {
 		}
 
 		this.resultTextArea.setText(htmlContent);
+		actionDown(this.Html2Text,"Text Transfer Successful!");
 	}
 
 	/**
@@ -141,6 +152,26 @@ public class WindowTextDialog extends JDialog {
 			texts.add("\n");
 		}
 		return texts;
+	}
+
+	/**
+	 * 将数字转换成英文表述
+	 */
+	private void execNumberTransfer(ActionEvent actionEvent){
+		String text = this.textArea.getText();
+
+		if(StringUtils.isNotEmpty(text)){
+
+			String result= NumTransferUtil.transfer(text);
+
+			if(result.startsWith("E:")){
+				actionDownError(this.NumTransfer,result.substring(2).replaceFirst("('.+')","<b>$1</b>"));
+			}else{
+				this.resultTextArea.setText(result);
+				actionDown(this.NumTransfer,"Transfer Number to <i>English Text</i> Successful!");
+			}
+
+		}
 	}
 
 	private void onOK() {
@@ -170,7 +201,22 @@ public class WindowTextDialog extends JDialog {
 			factory.createHtmlTextBalloonBuilder(result, null, new JBColor(new Color(186, 238, 186), new Color(73, 117, 73)), null)
 					.setFadeoutTime(3000)
 					.createBalloon()
-					.show(RelativePoint.fromScreen(button.getLocationOnScreen()), Balloon.Position.below);
+					.show(RelativePoint.fromScreen(button.getLocationOnScreen()), Balloon.Position.atLeft);
+		});
+	}
+
+	/**
+	 * @param button 按钮
+	 * @param result 提示信息(错误信息)
+	 */
+	private static void actionDownError(JButton button,String result) {
+		ApplicationManager.getApplication().invokeLater(() -> {
+			JBPopupFactory factory = JBPopupFactory.getInstance();
+			factory.createHtmlTextBalloonBuilder(result, null,JBColor.YELLOW, new JBColor(new Color(238, 125, 89), new Color(
+					222, 88, 25)), null)
+					.setFadeoutTime(3000)
+					.createBalloon()
+					.show(RelativePoint.fromScreen(button.getLocationOnScreen()), Balloon.Position.atLeft);
 		});
 	}
 
@@ -182,19 +228,17 @@ public class WindowTextDialog extends JDialog {
 		return new MouseAdapter() {
 			@Override public void mouseEntered(MouseEvent e) {
 				button.setBackground(button.getBackground().darker());
-				button.updateUI();
-//				super.mouseEntered(e);
+//				button.updateUI();
 			}
 
 			@Override public void mouseMoved(MouseEvent e) {
 				button.setBackground(button.getBackground().brighter());
-				button.updateUI();
-//				super.mouseMoved(e);
+//				button.updateUI();
 			}
 
 			@Override public void mouseExited(MouseEvent e) {
 				button.setBackground(button.getBackground().brighter());
-				button.updateUI();
+//				button.updateUI();
 			}
 		};
 	}
@@ -208,14 +252,12 @@ public class WindowTextDialog extends JDialog {
 		return new FocusAdapter() {
 			@Override public void focusGained(FocusEvent e) {
 				button.setBackground(button.getBackground().darker());
-				button.updateUI();
-//				super.focusGained(e);
+//				button.updateUI();
 			}
 
 			@Override public void focusLost(FocusEvent e) {
 				button.setBackground(button.getBackground().brighter());
-				button.updateUI();
-//				super.focusLost(e);
+//				button.updateUI();
 			}
 		};
 	}

@@ -19,7 +19,7 @@ public class TextAreaFactory implements ToolWindowFactory {
 	public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
 		WindowTextDialog windowTextDialog = new WindowTextDialog(toolWindow);
 		ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-		Content content = contentFactory.createContent(windowTextDialog.getContentPane(), "Text-Area", false);
+		Content content = contentFactory.createContent(windowTextDialog.getContentPane(), "Text-Tools", false);
 		toolWindow.getContentManager().addContent(content);
 	}
 }

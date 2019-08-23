@@ -5,7 +5,9 @@
     <constraints>
       <xy x="73" y="113" width="653" height="182"/>
     </constraints>
-    <properties/>
+    <properties>
+      <autoscrolls value="true"/>
+    </properties>
     <border type="none"/>
     <children>
       <grid id="e3588" binding="textAreaPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -16,6 +18,87 @@
         <properties/>
         <border type="none"/>
         <children>
+          <grid id="320f6" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="c5cc3" class="javax.swing.JButton" binding="SqlInParams">
+                <constraints/>
+                <properties>
+                  <background color="-3809565"/>
+                  <borderPainted value="false"/>
+                  <font style="1"/>
+                  <foreground color="-16095831"/>
+                  <hideActionText value="false"/>
+                  <text value="SqlInParams"/>
+                </properties>
+                <clientProperties>
+                  <hideActionText class="java.lang.Boolean" value="false"/>
+                </clientProperties>
+              </component>
+              <component id="58c84" class="javax.swing.JButton" binding="Html2Text">
+                <constraints/>
+                <properties>
+                  <background color="-15560767"/>
+                  <borderPainted value="false"/>
+                  <font style="1"/>
+                  <foreground color="-1"/>
+                  <text value="Html2Text"/>
+                </properties>
+              </component>
+              <component id="df98c" class="javax.swing.JButton" binding="NumTransfer">
+                <constraints/>
+                <properties>
+                  <font style="1"/>
+                  <foreground color="-13355980"/>
+                  <hideActionText value="true"/>
+                  <text value="NumTransfer"/>
+                </properties>
+              </component>
+              <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
+                <constraints/>
+                <properties>
+                  <alignmentX value="0.5"/>
+                  <background color="-7085280"/>
+                  <font style="1"/>
+                  <foreground color="-16373888"/>
+                  <selected value="false"/>
+                  <text value="COPY RESULT"/>
+                </properties>
+              </component>
+              <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
+                <constraints/>
+                <properties>
+                  <background color="-3480861"/>
+                  <focusCycleRoot value="true"/>
+                  <font style="1"/>
+                  <foreground color="-14836242"/>
+                  <inheritsPopupMenu value="true"/>
+                  <text value="CLOSE"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <scrollpane id="fce95">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="c8a6d" class="javax.swing.JTextArea" binding="textArea">
+                <constraints/>
+                <properties>
+                  <background color="-1"/>
+                  <editable value="true"/>
+                  <enabled value="true"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
           <scrollpane id="c8816">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -36,73 +119,6 @@
               </component>
             </children>
           </scrollpane>
-          <scrollpane id="fce95">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="c8a6d" class="javax.swing.JTextArea" binding="textArea">
-                <constraints/>
-                <properties>
-                  <background color="-1"/>
-                  <editable value="true"/>
-                  <enabled value="true"/>
-                </properties>
-              </component>
-            </children>
-          </scrollpane>
-          <grid id="320f6" layout-manager="FlowLayout" hgap="2" vgap="2" flow-align="1">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <preferred-size width="200" height="30"/>
-              </grid>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="c5cc3" class="javax.swing.JButton" binding="SqlInParams">
-                <constraints/>
-                <properties>
-                  <background color="-14254877"/>
-                  <font style="1"/>
-                  <foreground color="-1"/>
-                  <text value="SqlInParams"/>
-                </properties>
-                <clientProperties>
-                  <hideActionText class="java.lang.Boolean" value="false"/>
-                </clientProperties>
-              </component>
-              <component id="58c84" class="javax.swing.JButton" binding="Html2Text">
-                <constraints/>
-                <properties>
-                  <background color="-15680285"/>
-                  <font style="1"/>
-                  <foreground color="-1"/>
-                  <text value="Html2Text"/>
-                </properties>
-              </component>
-              <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
-                <constraints/>
-                <properties>
-                  <background color="-7085280"/>
-                  <foreground color="-16373888"/>
-                  <selected value="false"/>
-                  <text value="COPY RESULT"/>
-                </properties>
-              </component>
-              <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
-                <constraints/>
-                <properties>
-                  <background color="-1877159"/>
-                  <focusCycleRoot value="true"/>
-                  <foreground color="-5116178"/>
-                  <text value="CLOSE"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
         </children>
       </grid>
     </children>
