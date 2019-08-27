@@ -39,13 +39,6 @@ public class WindowTextDialog extends JDialog {
 		setModal(true);
 		getRootPane().setDefaultButton(buttonOK);
 
-		this.buttonOK.addActionListener(e -> onOK());
-
-		this.buttonCancel.addActionListener(e -> {
-			toolWindow.hide(null);
-			onCancel();
-		});
-
 		// call onCancel() when cross is clicked
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
@@ -57,22 +50,41 @@ public class WindowTextDialog extends JDialog {
 		// call onCancel() on ESCAPE
 		this.contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-		this.SqlInParams.addActionListener(this::execSqlInParamsAction);
-		this.Html2Text.addActionListener(this::execHtml2Text);
-		this.NumTransfer.addActionListener(this::execNumberTransfer);
+		execBind();
 
 		/*在点击此按钮时执行复制操作*/
 		this.buttonOK.addActionListener(e->{
-			//结果展示区域为空时,不执行复制操作.
-			if(StringUtils.isEmpty(this.resultTextArea.getText())){
-				return;
-			}
-			this.resultTextArea.requestFocus();
-			this.resultTextArea.selectAll();
-			this.resultTextArea.copy();
-			actionDown(this.buttonOK,"Copy Successful!");
+			requestCopy();
+			onOK();
 		});
 
+		this.buttonCancel.addActionListener(e -> {
+			toolWindow.hide(null);
+			onCancel();
+		});
+
+		extSettings();
+	}
+
+	/**
+	 * @return 复制结果区域的内容
+	 */
+	private boolean requestCopy() {
+		//结果展示区域为空时,不执行复制操作.
+		if(StringUtils.isEmpty(this.resultTextArea.getText())){
+			return false;
+		}
+		this.resultTextArea.requestFocus();
+		this.resultTextArea.selectAll();
+		this.resultTextArea.copy();
+		actionDown(this.buttonOK,"Copy Successful!");
+		return true;
+	}
+
+	/**
+	 * 按钮及操作区域附加设置
+	 */
+	private void extSettings() {
 		this.buttonOK.addMouseListener(getMouseEnterAdapter(this.buttonOK));
 		this.buttonCancel.addMouseListener(getMouseEnterAdapter(this.buttonCancel));
 		this.SqlInParams.addMouseListener(getMouseEnterAdapter(SqlInParams));
@@ -87,21 +99,38 @@ public class WindowTextDialog extends JDialog {
 	}
 
 	/**
+	 * 各个操作的事件绑定
+	 */
+	private void execBind() {
+		this.SqlInParams.addActionListener(this::execSqlInParamsAction);
+		this.Html2Text.addActionListener(this::execHtml2Text);
+		this.NumTransfer.addActionListener(this::execNumberTransfer);
+	}
+
+	/**
 	 * @param action 将列表参数处理成sql中in的条件参数.
 	 */
 	private void execSqlInParamsAction(ActionEvent action){
 		String text = this.textArea.getText();
 
 		if(StringUtils.isNotEmpty(text)){
-			String replace = "(\\r|\\n|\\r\\n)";
+			text = text.trim();
+			String result;
+			if(text.length()<1){
+				result = text;
+			}else{
+				String replace = "(?:\\r|\\n|\\r\\n|\\s+|\\s*,\\s*)";
 
-			String result = text.replaceAll(replace,"','").replaceFirst(",'$","");
+				result = text.replaceAll(replace,"','").replaceFirst(",'$","");
 
-			if(!result.startsWith("'")){
-				result = '\''+result;
-			}
-			if(!result.endsWith("'")){
-				result+='\'';
+				if(!result.startsWith("'")){
+					result = '\''+result;
+				}
+				if(!result.endsWith("'")){
+					result+='\'';
+				}
+
+				result = result.replaceAll("(?:'',|,'')","");
 			}
 
 			this.resultTextArea.setText(result);
@@ -162,13 +191,18 @@ public class WindowTextDialog extends JDialog {
 
 		if(StringUtils.isNotEmpty(text)){
 
-			String result= NumTransferUtil.transfer(text);
+			text = text.trim();
 
-			if(result.startsWith("E:")){
-				actionDownError(this.NumTransfer,result.substring(2).replaceFirst("('.+')","<b>$1</b>"));
-			}else{
-				this.resultTextArea.setText(result);
-				actionDown(this.NumTransfer,"Transfer Number to <i>English Text</i> Successful!");
+			if(text.length()>0){
+
+				String result= NumTransferUtil.transfer(text);
+
+				if(result.startsWith("E:")){
+					actionDownError(this.NumTransfer,result.substring(2).replaceFirst("('.+')","<b>$1</b>"));
+				}else{
+					this.resultTextArea.setText(result);
+					actionDown(this.NumTransfer,"Transfer Number to <i>English Text</i> Successful!");
+				}
 			}
 
 		}

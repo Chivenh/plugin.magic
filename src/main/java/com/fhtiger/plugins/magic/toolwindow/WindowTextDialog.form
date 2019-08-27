@@ -45,7 +45,8 @@
                   <background color="-15560767"/>
                   <borderPainted value="false"/>
                   <font style="1"/>
-                  <foreground color="-1"/>
+                  <foreground color="-15335486"/>
+                  <hideActionText value="true"/>
                   <text value="Html2Text"/>
                 </properties>
               </component>

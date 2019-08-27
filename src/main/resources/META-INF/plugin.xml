@@ -30,8 +30,6 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="com.fhtiger.plugins.magic.Html2Text" class="com.fhtiger.plugins.magic.Html2Text" text="html2Text-Test">
-            <add-to-group group-id="EditMenu"/>
-        </action>
+
     </actions>
 </idea-plugin>

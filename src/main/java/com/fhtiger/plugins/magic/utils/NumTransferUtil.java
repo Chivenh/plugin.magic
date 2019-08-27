@@ -36,7 +36,7 @@ public final class NumTransferUtil {
 		// 数字字符串参数
 		// 判断字符串是否为数字
 		if (!num.matches("\\d+")) {
-			return String.format("E:'%s' is not number", num);
+			return String.format("E:'%s' is not a normal number", num.substring(0,10)+"...");
 		}
 		num = num.replaceAll("^[0]*([1-9]*)", "$1");
 		// 把字符串前面的0去掉
